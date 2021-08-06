@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const {database} = require('./db');
+const {database} = require('./utilities');
 
 
 const sql = mysql.createPool(database)

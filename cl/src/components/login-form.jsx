@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import Axios from 'axios'
-import uniqId from 'uniqid'
 import { useHistory } from "react-router-dom";
 // import bcryptjs from 'bcryptjs'
 
@@ -28,7 +27,6 @@ const LoginForm = () => {
     if (validCase) {
 
       const user = {
-        idUser: uniqId(),
         email: email,
         pass: password
       }

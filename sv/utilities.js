@@ -4,5 +4,5 @@ module.exports ={
         user: "root",
         password: "",
         database: "alkemy_project"
-    }
+    }, key: 'k4fgh'
 }
