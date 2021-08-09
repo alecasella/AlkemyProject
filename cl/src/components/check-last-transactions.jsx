@@ -35,13 +35,12 @@ const CheckLastTransactions = () => {
         }
     }, [])
 
-    const callMovements = async () => {
-        const user = {
-            id_user: loggedUser.id
-        }
+
+    const callMovements = () => {
+
         try {
-            await Axios.post("http://localhost:3001/transactions/getTransactionsByIdUser", user, {
-                headers: { authorization: "Bearer " + loggedUser.tkn },
+            Axios.get(`http://localhost:3001/transactions/transaction/${loggedUser.id}`, {
+                headers: {authorization: "Bearer " + loggedUser.tkn},
             }).then((resp => {
                 if (resp.data.trim) {
                     setMsgEmptyList(resp.data);
@@ -61,22 +60,21 @@ const CheckLastTransactions = () => {
 
         totalAmount();
     }
-
+    
     const foundCategories = async (e) => {
         e.preventDefault();
 
         if (selectedCategory === 'all-movements') {
             callMovements();
             setMsg('');
-
         }
         else {
             try {
-                const resp = await Axios.post("http://localhost:3001/transactions/foundTransactionsByCategory", { id_user: loggedUser.id, category: selectedCategory },{
-                    headers: { authorization: "Bearer " + loggedUser.tkn },
+                await Axios.get(`http://localhost:3001/transactions/filter/${loggedUser.id}/${selectedCategory}`, {
+                    headers: {authorization: "Bearer " + loggedUser.tkn}
                 }).then(resp => {
                     if (resp.data === 'Empty list') {
-                        setMsgEmptyList(resp.data);
+                        setMsgEmptyList('Empty List');
                     }
                     else {
                         setTransactionList(resp.data);
@@ -86,7 +84,6 @@ const CheckLastTransactions = () => {
                 })
             } catch (e) { console.log(e); }
         }
-
     }
 
     const totalAmount = async () => {
@@ -95,16 +92,12 @@ const CheckLastTransactions = () => {
         let totalExtractions = 0;
         let resp = 0;
 
-        const user = {
-            id_user: loggedUser.id
-        }
-
         try {
-            await Axios.post("http://localhost:3001/transactions/getTransactionsByIdUser", user,{
+            await Axios.get(`http://localhost:3001/transactions/transaction/${loggedUser.id}`,{
                 headers: { authorization: "Bearer " + loggedUser.tkn },
             }).then((resp => {
                 if (resp.data.trim) {
-                    msgEmptyList(resp.data)
+                    setMsgEmptyList(resp.data)
                 }
                 else {
                     if (transactionList === []) {
@@ -132,8 +125,8 @@ const CheckLastTransactions = () => {
     const deleteTransaction = async (id_transaction) => {
     
         try {
-            await Axios.delete("http://localhost:3001/transactions/deleteTransaction",{
-                headers: {authorization: "Bearer " + loggedUser.tkn},  data: {
+            await Axios.delete("http://localhost:3001/transactions/transaction",{
+                headers: {authorization: "Bearer " + loggedUser.tkn},  data:  {
                     id_transaction,
                     id_user: loggedUser.id
                 },
@@ -170,7 +163,7 @@ const CheckLastTransactions = () => {
 
                     <div className="container justify-content-end d-flex">
                         <b >Filter By: </b>
-                        <select className=" form-control block mt-1" onChange={(e) => setSelectedCategory(e.target.value)} defaultValue={CATEGORY_OPTIONS[5].value} required >
+                        <select className=" form-control block mt-1" onChange={(e) => setSelectedCategory(e.target.value)} required >
                             {
                                 CATEGORY_OPTIONS.map((o, i) => (
                                     o.label !== 'Select one' ?
@@ -239,12 +232,12 @@ const CheckLastTransactions = () => {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" >Total Amount</td>
+                            <td colSpan="3" >Total Amount</td>
                             <td></td>
                             <td></td>
                             <td><p>{totalAm}</p></td>
                             <div className="container d-flex text-align-center justify-content-end">
-                                <button onClick={backToAdd} className="btn btn-primary btn-block mx-2">Back to Add</button>
+                                <button onClick={backToAdd} className="btn btn-primary btn-block mx-4">Return</button>
                             </div>
                         </tr>
                     </tfoot>

@@ -37,12 +37,9 @@ const EditTransaction = () => {
         if (!loggedUser) {
             history.replace('/logout');
         } else {
-            const data = {
-                id_transaction: idTransToEdit,
-                id_user: loggedUser.id
-            }
             try {
-                await Axios.post("http://localhost:3001/transactions/getTransactionsById", data ,{
+                const id_transaction = idTransToEdit;
+                await Axios.get(`http://localhost:3001/transactions/transaction/${loggedUser.id}/${id_transaction}`,{
                     headers: { authorization: "Bearer " + loggedUser.tkn },
                 }).then((resp => {
 
@@ -55,8 +52,6 @@ const EditTransaction = () => {
             } catch (e) { console.log(e) };
         }
     }, [])
-
-
 
     const backToLastTransactions = () => {
         
@@ -80,14 +75,14 @@ const EditTransaction = () => {
         }
 
         try {
-            await Axios.patch("http://localhost:3001/transactions/editTransactcion", transactionEdited,{
+            await Axios.patch(`http://localhost:3001/transactions/transaction/${loggedUser.id}`, transactionEdited,{
                 headers: { authorization: "Bearer " + loggedUser.tkn },
             }).then((resp => {
 
                 console.log(resp.data);
                 setMsg('Transaction Edited Successfully')
 
-                setTimeout(backToLastTransactions , 3000);
+                setTimeout(backToLastTransactions , 2000);
             }))
         } catch (e) { console.log(e); }
     }

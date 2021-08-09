@@ -8,12 +8,12 @@ const { key } = require('../utilities');
 
 function verify(req, res, next) {
     const authHeader = req.headers.authorization;
-
     if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, key, (err, user) => {
             if (err) res.status(403).json('Token is not valid!');
             req.user = user;
+            console.log(req.user);
             next();
         });
     } else{
@@ -21,7 +21,7 @@ function verify(req, res, next) {
     }
 }
 
-router.post('/addTransaction', verify, (req, res) => {
+router.post('/transaction', verify, (req, res) => {
 
     if (req.user.id === req.body.id_user) {
         const { amount, type_movement, concept, trans_date, id_user, category } = req.body;
@@ -41,12 +41,12 @@ router.post('/addTransaction', verify, (req, res) => {
 });
 
 
-router.post('/getTransactionsByIdUser', verify, (req, res) => {
+router.get('/transaction/:id_user', verify, (req, res) => {
 
-
-    if (req.user.id === req.body.id_user) {
+    const id_user = req.params.id_user;
+    
+    if (req.user.id === id_user) {
         
-        const { id_user } = req.body;
         const sqlTransactionsByID = "SELECT * FROM transactions where id_user = ? ORDER BY id_transaction DESC LIMIT 10 ";
 
         sql.query(sqlTransactionsByID, [id_user], (err, results) => {
@@ -62,11 +62,14 @@ router.post('/getTransactionsByIdUser', verify, (req, res) => {
     }
 })
 
-router.post('/getTransactionsById', verify, (req, res) => {
 
-    if (req.user.id === req.body.id_user) {
 
-        const { id_transaction } = req.body;
+router.get('/transaction/:id_user/:id_transaction', verify, (req, res) => {
+
+    const id_transaction  = req.params.id_transaction;
+
+    if (req.user.id === req.params.id_user) {
+
 
         const sqlTransactionsByID = "SELECT * FROM transactions where id_transaction = ?";
 
@@ -83,7 +86,7 @@ router.post('/getTransactionsById', verify, (req, res) => {
     }
 })
 
-router.delete('/deleteTransaction', verify, (req, res) => {
+router.delete('/transaction', verify, (req, res) => {
 
     if (req.user.id === req.body.id_user) {
 
@@ -107,9 +110,9 @@ router.delete('/deleteTransaction', verify, (req, res) => {
 });
 
 
-router.patch('/editTransactcion', verify, (req, res) => {
+router.patch('/transaction/:id_user', verify, (req, res) => {
 
-    if (req.user.id === req.body.id_user) {
+    if (req.user.id === req.params.id_user) {
 
         const { amount, concept, trans_date, category, id_transaction } = req.body;
 
@@ -129,12 +132,14 @@ router.patch('/editTransactcion', verify, (req, res) => {
 })
 
 
-router.post('/foundTransactionsByCategory', verify, (req, res) => {
+router.get('/filter/:id_user/:category', verify, (req, res) => {
+    
 
-    if (req.user.id === req.body.id_user) {
+    const category = req.params.category;
+    const id_user = req.params.id_user;
 
-        const { id_user, category } = req.body;
 
+    if (req.user.id === id_user) {
 
         const sqlFoundTransByCat = ` SELECT * FROM transactions WHERE id_user = '${id_user}' and category = '${category}' ORDER BY id_transaction DESC LIMIT 10  `;
 

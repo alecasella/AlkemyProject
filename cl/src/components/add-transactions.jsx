@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { AuthContext } from '../contexts/auth';
-
 import Axios from 'axios'
 
 const CATEGORY_OPTIONS = [
@@ -36,7 +35,6 @@ const Transactions = () => {
         }
     }, [])
 
-
     const addTransaction = async (e) => {
         e.preventDefault();
 
@@ -52,7 +50,7 @@ const Transactions = () => {
         if (amount >= 0) {
             try {
 
-                await Axios.post("http://localhost:3001/transactions/addTransaction", tansaction,{
+                await Axios.post("http://localhost:3001/transactions/transaction", tansaction,{
                     headers: {authorization: "Bearer " + loggedUser.tkn},
                 });
                 setAmount('');

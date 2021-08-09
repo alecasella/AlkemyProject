@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import Axios from 'axios'
 import { useHistory } from "react-router-dom";
-// import bcryptjs from 'bcryptjs'
 
 import { AuthContext } from '../contexts/auth';
 
@@ -32,7 +31,7 @@ const LoginForm = () => {
       }
 
       try {
-        Axios.post("http://localhost:3001/user/addUser", user).then((resp => {
+        Axios.post("http://localhost:3001/user/register", user).then((resp => {
           if (resp.data.trim) setError(resp.data);
         }))
       } catch (e) { console.log(e); }
@@ -51,7 +50,7 @@ const LoginForm = () => {
     }
 
     try {
-      Axios.post("http://localhost:3001/user/logUser", logUser).then((resp => {
+      Axios.post("http://localhost:3001/user/login", logUser).then((resp => {
         if (resp.data.trim) setError(resp.data);
         else {
 

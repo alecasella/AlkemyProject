@@ -7,7 +7,7 @@ const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
 
 
-router.post('/addUser', (req, res) => {
+router.post('/register', (req, res) => {
 
     const { email, pass } = req.body;
     const idUser = uniqId();
@@ -33,7 +33,7 @@ const generateAcessToken = (user) => {
         { expiresIn: '1h' })
 }
 
-router.post('/logUser', (req, res) => {
+router.post('/login', (req, res) => {
 
     const email = req.body.email;
     const pass = req.body.pass;
