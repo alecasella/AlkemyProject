@@ -51,7 +51,7 @@ const LoginForm = () => {
     }
 
     try {
-      Axios.post("http://localhost:3001/user/logUser", logUser).then( (resp => {
+      Axios.post("http://localhost:3001/user/logUser", logUser).then((resp => {
         if (resp.data.trim) setError(resp.data);
         else {
           const id = resp.data.userId;
@@ -64,9 +64,7 @@ const LoginForm = () => {
 
           login(user);
 
-          
-          
-          history.push(`/transaccions/${id}`);
+          history.push(`/addTransaccions/${id}`);
         }
       }))
     } catch (e) { console.log(e); }

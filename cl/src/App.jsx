@@ -5,7 +5,9 @@ import AuthProvider from './contexts/auth'
 import LoginForm from './components/login-form'
 import NavBar from './components/navbar'
 import Logout from './components/logout'
-import Transactions from './components/transactions';
+import AddTransactions from './components/add-transactions';
+import CheckLastTransactions from './components/check-last-transactions'
+import EditTransaction from './components/edit-transaction'
 
 import './App.css';
 
@@ -18,7 +20,10 @@ function App() {
           <Switch>
             <Route exact path="/" component={LoginForm}></Route>
             <Route path="/logout" component={Logout}></Route>
-            <Route path="/transaccions/:idUser" component={Transactions}></Route>
+            <Route path="/addTransaccions/:idUser" component={AddTransactions}></Route>
+            <Route path="/checkLastTransactions/:idUser" component={CheckLastTransactions}></Route>
+            <Route path="/editTransaction" component={EditTransaction}></Route>
+            
           </Switch>
         </Router>
       </div>

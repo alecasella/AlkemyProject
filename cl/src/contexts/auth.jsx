@@ -3,7 +3,8 @@ import React, { createContext, useState } from 'react'
 export const AuthContext = createContext({})
 
 const AuthProvider = ({ children }) => {
-    const [loggedUser, setLoggedUser] = useState(null)
+    const [loggedUser, setLoggedUser] = useState(null);
+    const [idTransToEdit, setTransToEdit ] = useState('');
 
     const login = (user) => {
         setLoggedUser(user)
@@ -18,7 +19,9 @@ const AuthProvider = ({ children }) => {
             value={{
                 loggedUser,
                 login,
-                logout
+                logout,
+                idTransToEdit,
+                setTransToEdit
             }}
         >
             {children}

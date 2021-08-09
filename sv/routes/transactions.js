@@ -83,10 +83,7 @@ router.patch('/editTransactcion', (req, res) => {
             res.status(400).send(err);
             return;
         }
-        res.status(200).json({
-            status: 200,
-            sucess: true
-        });
+        res.status(200).json(results);
     });
 })
 
