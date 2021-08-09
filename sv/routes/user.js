@@ -27,19 +27,6 @@ router.post('/addUser', (req, res) => {
 
 });
 
-router.get('/getUsers', (req, res) => {
-    const sqlGetAll = "SELECT * FROM users";
-
-    sql.query(sqlGetAll, (err, results) => {
-        if (err) {
-            res.status(400).send(err);
-            return;
-        }
-        if (results.length) res.json(results);
-        else res.json({});
-    });
-});
-
 const generateAcessToken = (user) => {
     return jwt.sign({ id: user.idUser, email: user.email },
         key,
@@ -68,8 +55,6 @@ router.post('/logUser', (req, res) => {
                 const tkn = generateAcessToken(results[0]);
                 const userEmail = results[0].email;
                 const userId = results[0].idUser;
-                console.log(userEmail);
-                console.log(userId);
 
                 res.json({userId , userEmail, tkn});
             }

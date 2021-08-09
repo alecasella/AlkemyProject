@@ -37,8 +37,14 @@ const EditTransaction = () => {
         if (!loggedUser) {
             history.replace('/logout');
         } else {
+            const data = {
+                id_transaction: idTransToEdit,
+                id_user: loggedUser.id
+            }
             try {
-                await Axios.post("http://localhost:3001/transactions/getTransactionsById", { id_transaction: idTransToEdit }).then((resp => {
+                await Axios.post("http://localhost:3001/transactions/getTransactionsById", data ,{
+                    headers: { authorization: "Bearer " + loggedUser.tkn },
+                }).then((resp => {
 
                     setAmount(resp.data[0].amount);
                     setConcept(resp.data[0].concept);
@@ -70,15 +76,18 @@ const EditTransaction = () => {
             trans_date: transactionDate,
             category: category,
             type_movement: typeOfMovement,
+            id_user: loggedUser.id,
         }
 
         try {
-            await Axios.patch("http://localhost:3001/transactions/editTransactcion", transactionEdited).then((resp => {
+            await Axios.patch("http://localhost:3001/transactions/editTransactcion", transactionEdited,{
+                headers: { authorization: "Bearer " + loggedUser.tkn },
+            }).then((resp => {
 
                 console.log(resp.data);
                 setMsg('Transaction Edited Successfully')
 
-                setTimeout(backToLastTransactions , 1500);
+                setTimeout(backToLastTransactions , 3000);
             }))
         } catch (e) { console.log(e); }
     }

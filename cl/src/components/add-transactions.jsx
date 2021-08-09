@@ -51,7 +51,10 @@ const Transactions = () => {
 
         if (amount >= 0) {
             try {
-                await Axios.post("http://localhost:3001/transactions/addTransaction", tansaction);
+
+                await Axios.post("http://localhost:3001/transactions/addTransaction", tansaction,{
+                    headers: {authorization: "Bearer " + loggedUser.tkn},
+                });
                 setAmount('');
                 setConcept('');
                 setTransactionDate('');

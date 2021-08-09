@@ -40,7 +40,9 @@ const CheckLastTransactions = () => {
             id_user: loggedUser.id
         }
         try {
-            await Axios.post("http://localhost:3001/transactions/getTransactionsByIdUser", user).then((resp => {
+            await Axios.post("http://localhost:3001/transactions/getTransactionsByIdUser", user, {
+                headers: { authorization: "Bearer " + loggedUser.tkn },
+            }).then((resp => {
                 if (resp.data.trim) {
                     setMsgEmptyList(resp.data);
                 }
@@ -70,7 +72,9 @@ const CheckLastTransactions = () => {
         }
         else {
             try {
-                const resp = await Axios.post("http://localhost:3001/transactions/foundTransactionsByCategory", { id_user: loggedUser.id, category: selectedCategory }).then(resp => {
+                const resp = await Axios.post("http://localhost:3001/transactions/foundTransactionsByCategory", { id_user: loggedUser.id, category: selectedCategory },{
+                    headers: { authorization: "Bearer " + loggedUser.tkn },
+                }).then(resp => {
                     if (resp.data === 'Empty list') {
                         setMsgEmptyList(resp.data);
                     }
@@ -96,7 +100,9 @@ const CheckLastTransactions = () => {
         }
 
         try {
-            await Axios.post("http://localhost:3001/transactions/getTransactionsByIdUser", user).then((resp => {
+            await Axios.post("http://localhost:3001/transactions/getTransactionsByIdUser", user,{
+                headers: { authorization: "Bearer " + loggedUser.tkn },
+            }).then((resp => {
                 if (resp.data.trim) {
                     msgEmptyList(resp.data)
                 }
@@ -124,14 +130,22 @@ const CheckLastTransactions = () => {
     }
 
     const deleteTransaction = async (id_transaction) => {
+    
         try {
-            await Axios.delete("http://localhost:3001/transactions/deleteTransaction/", { data: { id_transaction } }).then((resp => {
+            await Axios.delete("http://localhost:3001/transactions/deleteTransaction",{
+                headers: {authorization: "Bearer " + loggedUser.tkn},  data: {
+                    id_transaction,
+                    id_user: loggedUser.id
+                },
+            }).then((resp => {
                 if (transactionList.length === 1) setTransactionList([]);
                 setMsg('Transaction Deleted Successfully');
                 setMsgEmptyList('');
 
             }))
-        } catch (e) { console.log(e); }
+        } catch (e) { 
+            console.log(e); 
+        }
         callMovements();
 
     }

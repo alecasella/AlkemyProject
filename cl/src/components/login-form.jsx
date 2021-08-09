@@ -54,17 +54,16 @@ const LoginForm = () => {
       Axios.post("http://localhost:3001/user/logUser", logUser).then((resp => {
         if (resp.data.trim) setError(resp.data);
         else {
-          const id = resp.data.userId;
-          const email = resp.data.userEmail;
-          console.log(resp.data.tkn);
+
           const user = {
-            id: id,
-            email: email
+            id: resp.data.userId,
+            email: resp.data.userEmail,
+            tkn: resp.data.tkn
           }
 
           login(user);
 
-          history.push(`/addTransaccions/${id}`);
+          history.push(`/addTransaccions/${user.id}`);
         }
       }))
     } catch (e) { console.log(e); }
