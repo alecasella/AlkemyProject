@@ -79,7 +79,6 @@ const EditTransaction = () => {
                 headers: { authorization: "Bearer " + loggedUser.tkn },
             }).then((resp => {
 
-                console.log(resp.data);
                 setMsg('Transaction Edited Successfully')
 
                 setTimeout(backToLastTransactions , 2000);

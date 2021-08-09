@@ -13,7 +13,6 @@ function verify(req, res, next) {
         jwt.verify(token, key, (err, user) => {
             if (err) res.status(403).json('Token is not valid!');
             req.user = user;
-            console.log(req.user);
             next();
         });
     } else{
