@@ -34,6 +34,7 @@ const EditTransaction = () => {
     const { loggedUser, idTransToEdit } = useContext(AuthContext);
 
     useEffect(async () => {
+        
         if (!loggedUser) {
             history.replace('/logout');
         } else {

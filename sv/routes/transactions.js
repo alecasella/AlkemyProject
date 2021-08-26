@@ -4,21 +4,8 @@ const router = express.Router();
 
 const jwt = require('jsonwebtoken');
 const { key } = require('../utilities');
-// const verify = require('../verifyToken');
+const verify = require('../middlewares/verifyToken');
 
-function verify(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-        const token = authHeader.split(" ")[1];
-        jwt.verify(token, key, (err, user) => {
-            if (err) res.status(403).json('Token is not valid!');
-            req.user = user;
-            next();
-        });
-    } else{
-        return res.status(401).json('You are not authenticated');
-    }
-}
 
 router.post('/transaction', verify, (req, res) => {
 
