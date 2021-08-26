@@ -2,8 +2,6 @@ const express = require('express');
 const sql = require('../database')
 const router = express.Router();
 
-const jwt = require('jsonwebtoken');
-const { key } = require('../utilities');
 const verify = require('../middlewares/verifyToken');
 
 
